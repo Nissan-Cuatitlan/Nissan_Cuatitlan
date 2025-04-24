@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Archivos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table {
+            background-color: white;
+            color: black;
+        }
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-download:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h1 class="mb-4">📄 Historial de Archivos</h1>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Nombre del Archivo</th>
+                <th>Descargar</th>
+            </tr>
+        </thead>
+        <tbody id="fileList"></tbody>
+    </table>
+
+    <a href="/" class="btn btn-primary mt-3">⬅️ Volver a Subir Archivos</a>
+</div>
+
+<script>
+    function fetchFiles() {
+        $.get("/files", function(data) {
+            let fileList = $("#fileList");
+            fileList.empty();
+            data.files.forEach(file => {
+                fileList.append(`
+                    <tr>
+                        <td>${file}</td>
+                        <td><a href="/download/${file}" class="btn btn-download">⬇️ Descargar</a></td>
+                    </tr>
+                `);
+            });
+        });
+    }
+
+    $(document).ready(function() {
+        fetchFiles();
+    });
+</script>
+
+</body>
+</html>
